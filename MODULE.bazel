@@ -1,0 +1,16 @@
+# MODULE.bazel
+module(
+    name = "node_bazel_example",
+    version = "0.0.1",
+)
+
+bazel_dep(name = "aspect_rules_js", version = "1.31.0")
+bazel_dep(name = "rules_nodejs", version = "6.3.4")
+
+node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node")
+node.toolchain(
+  # latest LTS
+  node_version = "22.14.0"
+)
+use_repo(node, "nodejs_toolchains")
+
