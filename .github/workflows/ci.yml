@@ -31,17 +31,12 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const pullRequests = await github.rest.pulls.list({
+            const { listPullRequests } = await import('${{ github.workspace }}/lib.mjs')
+
+            const pulls = await github.rest.pulls.list({
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
             });
 
-            if (pullRequests.data.length === 0) {
-              console.log('No open pull requests found.');
-            } else {
-              console.log(`Found ${pullRequests.data.length} open pull request(s):`);
-              pullRequests.data.forEach(pr => {
-                console.log(`#${pr.number}: ${pr.title} (by ${pr.user.login})`);
-              });
-            }
+            console.log(listPullRequests(pulls));

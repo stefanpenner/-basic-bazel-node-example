@@ -1,9 +1,20 @@
 import assert from 'assert'
 import { describe, it } from 'node:test'
-import { message } from './lib.mjs'
+import { listPullRequests } from './lib.mjs'
 
 describe('basic', () => {
-  it('test', () => {
-    assert.strictEqual("Hello, World!", message())
+  it('listPullRequests', () => {
+    assert.strictEqual("No open pull requests found.", listPullRequests({ data: [] }))
+    assert.strictEqual("Found 1 open pull request(s):\n#1: the title (by maia)", listPullRequests({
+      data: [
+        {
+          number: '1',
+          title: 'the title',
+          user: {
+            login: 'maia'
+          }
+        }
+      ]
+    }))
   });
 });
